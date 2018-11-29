@@ -46,21 +46,13 @@ void ComputedChaining::insert(int key){
                 //Find the null offset to place num
 
                 int KeyinGosterdigiIndex = ((data[moddedData].key % data.size()) + (data[moddedData].plink * data[moddedData].key / data.size())) % data.size();  //modofplacednumber + (plink * arttirimsayisi) sonra mod table size
-                int freeplink = KeyinGosterdigiIndex;
-                while(data[freeplink].plink != -1){  //Bos plink bulana kadar dön
-                    freeplink = ((data[moddedData].key % data.size()) + (data[moddedData].plink * data[moddedData].key / data.size())) % data.size();
-                }
-
-                //Þimdi PLINK BOS ISE kýsmý gibi davran ve sayiyi yerlestir (freeflink i kullan)
-
-                //Yukarýdan alinan Fonksiyon
 
                 //---------------------------------------------------------------------------------------
 
-                int quotientOfPlacedNum = data[freeplink].key / data.size();  //Eklenecek olan konumdaki anahtarin arttirim degeri
+                int quotientOfPlacedNum = data[KeyinGosterdigiIndex].key / data.size();  //Eklenecek olan konumdaki anahtarin arttirim degeri
 
                 //Find free place
-                int freeplace = freeplink;
+                int freeplace = KeyinGosterdigiIndex;
                 int kacKezDondum = 0;
                 while(data[freeplace].valid == true){   //Boþ yer bulana kadar dön
                     freeplace = (freeplace + quotientOfPlacedNum) % data.size();
@@ -74,7 +66,7 @@ void ComputedChaining::insert(int key){
 
                 //Onu gösteren linki set et
 
-                data[freeplink].plink = kacKezDondum;
+                data[KeyinGosterdigiIndex].plink = kacKezDondum;
 
                 //---------------------------------------------------------------------------------------
 
@@ -88,9 +80,9 @@ void ComputedChaining::insert(int key){
                 //Find the index mod and numbers comes after this key (find them with trace plink)
                 vector<int> removed_keys;
                 int removedKeyIndex = moddedData;
-                while(data[removedKeyIndex].plink != -1){  //Bos plink bulana kadar dön
+                while(data[removedKeyIndex].plink == -1){  //Bos plink bulana kadar dön
 
-                    cout << "Number " << data[removedKeyIndex].key << " added to removed_keys()" << endl;
+                    cout << "\nNumber " << data[removedKeyIndex].key << " added to removed_keys()" << endl;
                     removed_keys.push_back(data[removedKeyIndex].key);
                     data[removedKeyIndex].key = 999;                    //REMOVE NUMBER
                     data[removedKeyIndex].valid = false;                //REMOVE NUMBER
@@ -101,7 +93,7 @@ void ComputedChaining::insert(int key){
 
                 }
 
-                cout << "Number " << data[removedKeyIndex].key << " added to removed_keys()" << endl;
+                cout << "\nNumber " << data[removedKeyIndex].key << " added to removed_keys()" << endl;
                 removed_keys.push_back(data[removedKeyIndex].key);  //Add last number to the removed_keys here
                 data[removedKeyIndex].key = 999;                    //REMOVE NUMBER
                 data[removedKeyIndex].valid = false;                //REMOVE NUMBER
@@ -117,20 +109,16 @@ void ComputedChaining::insert(int key){
 
                 //Silinen Sayilari Tekrar Yerlestir
 
-
-
                     int rmkey = removed_keys[0];
 
                     int moddedData_rmkey = rmkey % data.size();  // Take mod of the data with table size
-                    int quotientData_rmkey = rmkey / data.size();
 
                     int kacKezDondum = 0;
-                    int placement = data[moddedData_rmkey].key;
+                    int placement = moddedData_rmkey;
 
                     while(data[placement].valid == true){   //Boþ yer bulana kadar dön
                         placement = (placement + data[moddedData_rmkey].key / data.size()) % data.size();   //Silinen keyin modunda bulunan sayýnýn quatienti kadar arttir hep !!!
                         kacKezDondum ++;
-
                     }
 
                     //Datayi yerine koy
