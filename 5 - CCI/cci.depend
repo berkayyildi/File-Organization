@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1543454969 source:c:\users\berkay\desktop\c++\cci\main.cpp
+	<iostream>
+	<fstream>
+	"computed_chaining.h"
+
+1543249090 c:\users\berkay\desktop\c++\cci\computed_chaining.h
+	<vector>
+	<iostream>
+	<iomanip>
+
+1543455293 source:c:\users\berkay\desktop\c++\cci\computed_chaining.cpp
+	<iostream>
+	"computed_chaining.h"
+
