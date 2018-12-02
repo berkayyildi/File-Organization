@@ -13,27 +13,21 @@ void ComputedChaining::insert(int key){
         cout << "\nNumber " << key << " Placed to index " << moddedData << " (Space Free)" << endl;
     }else{                                  //--------------------------------------------------------------------->MODDED DOLU ISE (VALID ISE) PLINK BOS ISE
 
-
         if (data[moddedData].key % data.size() == moddedData)  {//---------------------------------------------------------------------> O YERDE BULUNAN KEY KENDI EVINDEYSE
 
             //Find the first number which null offset to place key
             int quatient = data[moddedData].key / data.size();
             if (quatient == 0){quatient = 1;}
 
-            int freeplink;
-            if (data[moddedData].plink == -1){  //PLINK BOS ISE
-                    freeplink = moddedData;
-            }else{                              //PLINK DOLU ISE
-                    freeplink = ((data[moddedData].key % data.size()) + data[moddedData].plink * quatient) % data.size();  //modofplacednumber + (plink * arttirimsayisi) sonra mod table size
-            }
-
+            int freeplink = moddedData;
             while(data[freeplink].plink != -1){  //Bos plink bulana kadar dön
                 freeplink = (freeplink + (data[moddedData].plink * quatient)) % data.size();
             }
 
-            //Şimdi PLINK BOS ISE kısmı gibi davran ve sayiyi yerlestir (freeflink i kullan)
+            //Sayiyi yerlestir
 
             int quotientOfPlacedNum = data[freeplink].key / data.size();  //Eklenecek olan konumdaki anahtarin arttirim degeri
+            if (quotientOfPlacedNum == 0) {quotientOfPlacedNum = 1;}
             int freeplace = freeplink;
             int kacKezDondum = 0;
             while(data[freeplace].valid == true){   //Boş yer bulana kadar dön
@@ -63,7 +57,6 @@ void ComputedChaining::insert(int key){
                 removed_keys.push_back(data[removedKeyIndex].key);
                 data[removedKeyIndex].valid = false;                //REMOVE NUMBER
                 int removedPlink = data[removedKeyIndex].plink;     //Store Keys Plink
-                data[removedKeyIndex].plink = -1;                   //REMOVE NUMBER
 
                 int quatient = data[removedKeyIndex].key / data.size();
                 if(quatient == 0){quatient = 1;}
@@ -74,9 +67,7 @@ void ComputedChaining::insert(int key){
 
             cout << "Number " << data[removedKeyIndex].key << " added to removed_keys()" << endl;
             removed_keys.push_back(data[removedKeyIndex].key);  //Add last number to the removed_keys here
-            data[removedKeyIndex].key = 999;                    //REMOVE NUMBER
             data[removedKeyIndex].valid = false;                //REMOVE NUMBER
-            data[removedKeyIndex].plink = -1;                   //REMOVE NUMBER
 
 
             //Sayiyi mod degerine koy (orasi bosaltilmisti)
@@ -94,6 +85,7 @@ void ComputedChaining::insert(int key){
             for (int i=0 ; i < removed_keys.size() ; i++){
 
                 int startquatient = data[position].key / data.size();
+                if (startquatient == 0){startquatient = 1;}
                 int kacKezDondum = 0;
                 position = (position + (kacKezDondum * startquatient)) % data.size();   //ilk seferinde 0 gelicek position = position olacak sonra hep ustune ekleyerek gidicek
 
